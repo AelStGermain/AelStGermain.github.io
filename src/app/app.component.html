@@ -1,0 +1,202 @@
+<div id="page-container" [class.arcade-mode]="!isEditorialPage" [class.home-mode]="isEditorialPage"
+  [class.recruiter-fullscreen]="isRecruiterMode">
+  <a class="skip-link" href="#content-wrap">Saltar al contenido</a>
+
+  <!-- Y2K PERSONAL SITE HEADER -->
+  <header *ngIf="!isRecruiterMode" class="site-header">
+    <div class="header-strip"><span>★ AEL'S SECRET CORNER ★</span><span class="best-viewed">BEST VIEWED WITH
+        CURIOSITY</span></div>
+    <div class="masthead">
+      <a class="brand" routerLink="/"><span>Ael's</span><strong>Secret Corner</strong><small>developer • educator •
+          digital explorer</small></a>
+      <div class="header-orb" aria-hidden="true"><img src="banner.gif" alt=""></div>
+      <div class="site-clock"><b>STATUS</b><span>● ONLINE</span><small>Chile / WWW</small></div>
+    </div>
+    <button class="menu-button" type="button" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen">☰ SITE
+      MENU</button>
+    <nav class="site-nav" [class.open]="isMenuOpen" aria-label="Navegación principal">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">⌂ HOME</a>
+      <a routerLink="/about" routerLinkActive="active">☺ ABOUT ME</a>
+      <a href="#projects" (click)="scrollToProjects($event)">🚀 MY PROJECTS</a>
+      <button type="button" class="nav-games-btn" (click)="toggleProjectsDrawer()">🎮 JUEGOS DOCK</button>
+      <button type="button" class="nav-recruiter-btn" [class.active]="isRecruiterMode" (click)="toggleRecruiterMode()">
+        {{ isRecruiterMode ? '👾 VISTA PERSONAL' : '💼 RECRUITER VIEW' }}
+      </button>
+    </nav>
+  </header>
+
+  <!-- COLLAPSIBLE LEFT DRAWER: AEL'S GAMES & MINI-APPS DOCK -->
+  <aside *ngIf="!isRecruiterMode" class="ael-projects-drawer" [class.open]="isProjectsDrawerOpen"
+    aria-label="Juegos de Ael">
+    <button class="drawer-toggle-btn" (click)="toggleProjectsDrawer()" aria-label="Alternar juegos de Ael">
+      <span class="led-blink">●</span>
+      <span class="drawer-btn-text">🎮 ARCADE DOCK</span>
+      <span class="arrow">{{isProjectsDrawerOpen ? '◀' : '▶'}}</span>
+    </button>
+
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h2>🎮 ARCADE DOCK 🎮</h2>
+        <small>juegos &amp; mini-apps</small>
+        <button class="drawer-close" (click)="toggleProjectsDrawer()" aria-label="Cerrar">✕</button>
+      </div>
+
+      <p class="drawer-intro">Selecciona cualquiera de las mini-apps del sitio:</p>
+
+      <div class="games-dock-grid">
+        <a *ngFor="let game of internalGames" [routerLink]="game.path" routerLinkActive="active" class="game-dock-tile"
+          (click)="closeProjectsDrawerOnNav()">
+          <span class="tile-icon">{{game.icon}}</span>
+          <div class="tile-info">
+            <h4>{{game.title}}</h4>
+            <span class="tile-badge">{{game.badge}}</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="drawer-footer">
+        <span>AEL ARCADE DOCK</span>
+        <small>8 MINI-APPS</small>
+      </div>
+    </div>
+  </aside>
+
+  <main id="content-wrap"><router-outlet></router-outlet></main>
+
+  <aside class="cursor-palette" *ngIf="!isRecruiterMode" aria-label="Selector de cursor">
+    <span>CURSOR</span>
+    <button (click)="setCursor('system')" [class.selected]="cursorChoice==='system'"
+      title="Cursor del sistema">↖</button>
+    <button (click)="setCursor('cursor1')" [class.selected]="cursorChoice==='cursor1'" title="Gatito"><img
+        src="cursor.gif" alt="Gatito"></button>
+    <button (click)="setCursor('cursor2')" [class.selected]="cursorChoice==='cursor2'" title="Ordenador"><img
+        src="cursor2.gif" alt="Ordenador"></button>
+    <button (click)="setCursor('cursor3')" [class.selected]="cursorChoice==='cursor3'" title="Cursor 3"><img
+        src="cursor3.gif" alt="Cursor 3"></button>
+    <button (click)="setCursor('cursor4')" [class.selected]="cursorChoice==='cursor4'" title="Cursor 4"><img
+        src="cursor4.gif" alt="Cursor 4"></button>
+    <button (click)="setCursor('wand')" [class.selected]="cursorChoice==='wand'" title="Varita">✧</button>
+  </aside>
+
+  <!-- FLOATING & DRAGGABLE BOT LAUNCHER BUTTON -->
+  <button *ngIf="!isRecruiterMode" class="floating-bot-launcher" (click)="onLauncherClick($event)"
+    (mousedown)="startLauncherDrag($event)" (touchstart)="startLauncherDrag($event)"
+    [style.transform]="'translate3d(' + launcherPos.x + 'px, ' + launcherPos.y + 'px, 0)'"
+    title="Abrir AEL_BOT (Arrastra para mover)">
+    <span class="drag-handle">::</span>
+    <span class="bot-icon">🤖</span>
+    <span class="bot-label">AEL_BOT</span>
+    <span class="bot-key">[/]</span>
+  </button>
+
+  <!-- GLOBAL AEL_BOT MODAL WINDOW WITH SELECTABLE Y2K FRAMES -->
+  <div class="y2k-bot-backdrop" *ngIf="botService.isOpen" (click)="botService.closeBot()">
+    <section class="y2k-bot-window frame-{{botService.currentFrame}}" role="dialog" aria-modal="true"
+      aria-label="AEL Bot" (click)="$event.stopPropagation()">
+      <!-- Y2K Decorative Window Frame Header -->
+      <div class="y2k-frame-header">
+        <div class="header-left">
+          <span class="frame-icon">✧</span>
+          <span class="frame-title">🤖 AEL_BOT v1.2 — INTELIGENCIA VIRTUAL</span>
+        </div>
+        <div class="header-controls">
+          <button class="win-btn min" (click)="botService.closeBot()" title="Minimizar">_</button>
+          <button class="win-btn close" (click)="botService.closeBot()" title="Cerrar">✕</button>
+        </div>
+      </div>
+
+      <!-- Frame Selector Panel -->
+      <div class="y2k-frame-selector-bar">
+        <span class="frame-selector-label">MARCO Y2K:</span>
+        <button *ngFor="let f of botService.frames" class="frame-btn" [class.active]="botService.currentFrame === f.id"
+          (click)="botService.setFrame(f.id)">
+          {{f.icon}} {{f.name}}
+        </button>
+      </div>
+
+      <!-- Marquee & Status -->
+      <div class="y2k-screen-marquee">
+        <span>● AEL_BOT EN LÍNEA
+        </span>
+      </div>
+
+      <!-- Chat Log Container -->
+      <div class="y2k-bot-log" aria-live="polite">
+        <p *ngFor="let item of botService.conversation" [class.user-line]="item.who==='you'">
+          <b>{{item.who==='bot'?'AEL_BOT':'VISITOR'}}:</b> {{item.text}}
+        </p>
+      </div>
+
+      <!-- Quick Suggestions -->
+      <div class="y2k-suggestions">
+        <button (click)="botService.ask('perfil')">perfil</button>
+        <button (click)="botService.ask('stack')">stack</button>
+        <button (click)="botService.ask('experiencia')">experiencia</button>
+        <button (click)="botService.ask('proyectos')">proyectos</button>
+        <button (click)="botService.ask('gustos')">gustos</button>
+        <button (click)="botService.ask('linux')">linux</button>
+      </div>
+
+      <!-- Command Input Form -->
+      <form (ngSubmit)="botService.ask()" class="y2k-form">
+        <label for="y2k-bot-msg">CMD:</label>
+        <input id="y2k-bot-msg" class="y2k-bot-input" name="message" [(ngModel)]="botService.message" autocomplete="off"
+          placeholder="Pregúntale lo que quieras a Ael...">
+        <button type="submit" class="y2k-submit-btn">ENVIAR ▶</button>
+      </form>
+    </section>
+  </div>
+
+  <div class="custom-gif-cursor" *ngIf="activeGifCursor && !isRecruiterMode"
+    [style.display]="isCursorVisible ? 'block' : 'none'"
+    [style.transform]="'translate3d(' + cursorX + 'px, ' + cursorY + 'px, 0)'" aria-hidden="true">
+    <img [src]="activeGifCursor" alt="" />
+  </div>
+
+  <!-- AEL_PET Companion -->
+  <app-neko *ngIf="!isRecruiterMode" [mouseX]="cursorX" [mouseY]="cursorY"></app-neko>
+
+  <!-- ENTRY VIEW MODE PROMPT MODAL -->
+  <div class="view-prompt-backdrop" *ngIf="showViewPromptModal">
+    <div class="view-prompt-modal" role="dialog" aria-modal="true" aria-label="Selección de experiencia">
+      <div class="modal-top-bar">
+        <span class="top-title">✨ WELCOME / BIENVENIDO</span>
+      </div>
+      <div class="modal-body">
+        <h2>¿CÓMO DESEAS EXPLORAR EL SITIO?</h2>
+        <p class="modal-subtitle">Selecciona el enfoque de navegación que mejor se adapte a tu objetivo:</p>
+
+        <div class="modal-options">
+          <div class="opt-card recruiter" style="cursor: default;">
+            <div class="card-icon">💼</div>
+            <div class="card-text" style="width: 100%;">
+              <h3>PORTAFOLIO EJECUTIVO / RECRUITER VIEW</h3>
+              <p>Muestra directamente mis proyectos reales, stack técnico, arquitectura y trayectoria académica.</p>
+              <span class="card-tag" style="margin-bottom: 8px;">RECOMENDADO PARA RECLUTADORES</span>
+              
+              <div class="recruiter-lang-choice" style="display: flex; gap: 8px; margin-top: 8px; width: 100%;">
+                <button type="button" class="btn-lang" (click)="chooseRecruiterView('es')" style="flex: 1; padding: 6px; border: 2px solid #70f3ff; background: rgba(112,243,255,0.15); color: #70f3ff; font-family: 'Press Start 2P', monospace; font-size: 7px; cursor: pointer;">
+                  ESPAÑOL 🇨🇱
+                </button>
+                <button type="button" class="btn-lang" (click)="chooseRecruiterView('en')" style="flex: 1; padding: 6px; border: 2px solid #e879f9; background: rgba(232,121,249,0.15); color: #e879f9; font-family: 'Press Start 2P', monospace; font-size: 7px; cursor: pointer;">
+                  ENGLISH 🇺🇸
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="opt-card personal" (click)="chooseViewMode('personal')">
+            <div class="card-icon">👾</div>
+            <div class="card-text">
+              <h3>VISTA PERSONAL - Ael's Secret Corner</h3>
+              <p>Experiencia interactiva con algunos mini juegos y apps nostálgicos.
+              </p>
+              <span class="card-tag">RECOMENDADO PARA EXPLORACIÓN LIBRE Y CURIOSIDAD</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

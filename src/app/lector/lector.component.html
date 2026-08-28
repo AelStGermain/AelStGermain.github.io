@@ -1,0 +1,34 @@
+<div class="lector-container angel-window">
+  <h1>🎤 LECTOR MÁGICO 🎤</h1>
+
+  <div class="stats">
+    <span>Puntos: {{score}}</span>
+    <span>Correctas: {{correctWords}}</span>
+    <span>Estado: {{statusText}}</span>
+  </div>
+
+  <div class="word-display">
+    <h2>{{currentWord}}</h2>
+  </div>
+
+  <div class="controls">
+    <button (click)="previousText()">⏮️ ANTERIOR</button>
+    <button (click)="toggleListening()" [style.background]="isListening ? '#e74c3c' : '#27ae60'">
+      {{isListening ? '⏹️ DETENER' : '🎤 EMPEZAR'}}
+    </button>
+    <button (click)="listenExample()">🔊 ESCUCHAR</button>
+    <button (click)="nextWord()">⏭️ SIGUIENTE</button>
+  </div>
+
+  <div class="recognition" *ngIf="recognizedText || isListening">
+    <h3>Escuché: {{recognizedText || 'Esperando...'}}</h3>
+  </div>
+
+  <div *ngIf="showFeedback" [class.success]="isCorrect" [class.error]="!isCorrect" style="margin-top: 10px;">
+    {{isCorrect ? '🎉 ¡EXCELENTE!' : '🤔 ¡Inténtalo de nuevo!'}}
+  </div>
+
+  <div *ngIf="errorMessage" class="error" style="margin-top: 10px;">
+    ⚠️ {{errorMessage}}
+  </div>
+</div>

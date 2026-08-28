@@ -1,0 +1,156 @@
+<section class="profile-screen">
+  <div class="angel-sticker sticker-left" aria-hidden="true">♡<i>✦</i></div>
+  <div class="angel-sticker sticker-right" aria-hidden="true">☁<i>✧</i></div>
+  <article class="profile-window">
+    <header class="titlebar"><span>📁 C:\USERS\AEL\CAREER_PROFILE.EXE</span><span>_ □ ×</span></header>
+    <div class="profile-layout">
+      <aside class="identity-panel">
+        <div class="photo-frame"><div class="avatar-cycle"><img src="avatar-dark-retro.jpg" alt="Retrato retro de Ael con cabello oscuro"><img src="avatar-light-retro.jpg" alt="Retrato retro de Ael con cabello claro"></div><span>ONLINE</span></div>
+        <h1>AEL</h1>
+        <p class="role">Systems Analyst<br><b>Junior Backend & Data Integration</b></p>
+        <div class="signal"><span>JAVA</span><span>SPRING</span><span>SQL</span><span>REST</span></div>
+        <p class="language">🌐 ENGLISH: C1</p>
+      </aside>
+
+      <div class="profile-content">
+        <nav class="tabs" aria-label="Secciones del perfil">
+          <button (click)="setTab('profile')" [class.active]="activeTab==='profile'">PROFILE.TXT</button>
+          <button (click)="setTab('stack')" [class.active]="activeTab==='stack'">STACK.DAT</button>
+          <button (click)="setTab('experience')" [class.active]="activeTab==='experience'">XP.LOG</button>
+          <button (click)="setTab('portfolio')" [class.active]="activeTab==='portfolio'">PORTFOLIO.EXE</button>
+          <button (click)="setTab('target')" [class.active]="activeTab==='target'">TARGET.INI</button>
+        </nav>
+        <div class="tab-panel" [ngSwitch]="activeTab">
+          <section *ngSwitchCase="'profile'">
+            <h2>ABOUT_ME.TXT</h2>
+            <p><span>C:\&gt;</span> Técnico Analista de Sistemas y estudiante de Ingeniería Civil Informática, con experiencia en backend, integración y gestión de datos.</p>
+            <p><span>C:\&gt;</span> He desarrollado aplicaciones con Java/Spring Boot, Node.js, Angular/Ionic, APIs REST, Firebase, PostgreSQL y Spring Security.</p>
+            <p><span>C:\&gt;</span> Mi experiencia previa en educación fortalece mi capacidad para comprender necesidades, documentar procesos, capacitar y colaborar con equipos multidisciplinarios.</p>
+          </section>
+          <section *ngSwitchCase="'stack'">
+            <h2>CORE_SKILLS.SYS</h2>
+            <div class="core-skills"><strong *ngFor="let skill of coreSkills">★ {{skill}}</strong></div>
+            <h3 class="modules-header">EXTENDED_MODULES/</h3>
+            <div class="stack-groups-grid">
+              <div class="stack-group-card" *ngFor="let group of stackGroups">
+                <div class="stack-group-header">
+                  <span class="group-icon">📂</span>
+                  <h4>{{group.category}}</h4>
+                </div>
+                <div class="skill-cloud">
+                  <span *ngFor="let skill of group.skills">{{skill}}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section *ngSwitchCase="'experience'">
+            <h2>EXPERIENCE.LOG</h2>
+            <div class="xp-timeline">
+              <!-- TECH_PRACTICE -->
+              <article class="xp-card">
+                <header class="xp-card-header">
+                  <div class="xp-title-group">
+                    <time class="xp-tag-code">[TECH_PRACTICE]</time>
+                    <h3>Junior Backend &amp; Data Integration — Práctica Profesional</h3>
+                  </div>
+                  <span class="xp-company">FollowUP Customer Experience</span>
+                </header>
+                <p class="xp-summary">
+                  Desarrollo backend, integración de sistemas e implementación de soluciones de gestión y calidad de datos operacionales.
+                </p>
+                <ul class="xp-bullets">
+                  <li>Desarrollo e integración de servicios e interfaces para consumo y sincronización de datos.</li>
+                  <li>Modelado y consultas SQL orientadas a la optimización de procesos de datos.</li>
+                  <li>Validación, saneamiento y estructuración masiva de datos (Master Data / CSV / Excel).</li>
+                  <li>Levantamiento de requerimientos técnicos y documentación de procesos de integración.</li>
+                </ul>
+                <div class="xp-tags">
+                  <span class="xp-tag">Scrum</span>
+                  <span class="xp-tag">Requirements</span>
+                  <span class="xp-tag">Documentation</span>
+                  <span class="xp-tag">Data Validation</span>
+                  <span class="xp-tag">Cross-functional</span>
+                </div>
+              </article>
+
+              <!-- PROFESSIONAL_BACKGROUND -->
+              <article class="xp-card">
+                <header class="xp-card-header">
+                  <div class="xp-title-group">
+                    <time class="xp-tag-code">[PROFESSIONAL_BACKGROUND]</time>
+                    <h3>Experiencia Profesional Previa &amp; Habilidades Transferibles</h3>
+                  </div>
+                  <span class="xp-company">Sector Educativo / Formación</span>
+                </header>
+                <p class="xp-summary">
+                  Trayectoria previa que fortalece competencias fundamentales para la ingeniería de software y la colaboración en equipo.
+                </p>
+                <ul class="xp-bullets">
+                  <li><strong>Análisis de necesidades:</strong> Levantamiento y priorización de requerimientos enfocados en el usuario.</li>
+                  <li><strong>Documentación &amp; Capacitación:</strong> Elaboración de guías explicativas, manuales y formación directa.</li>
+                  <li><strong>Resolución de problemas:</strong> Diagnóstico analítico de incidencias y diseño de soluciones efectivas.</li>
+                  <li><strong>Colaboración multidisciplinaria:</strong> Comunicación transparente y alineación continua entre equipos.</li>
+                </ul>
+              </article>
+
+              <!-- EDUCATION_STATUS -->
+              <article class="xp-card">
+                <header class="xp-card-header">
+                  <div class="xp-title-group">
+                    <time class="xp-tag-code">[EDUCATION_STATUS]</time>
+                    <h3>Estado Académico &amp; Certificaciones</h3>
+                  </div>
+                  <span class="xp-company">Educación Superior</span>
+                </header>
+                <div class="education-grid">
+                  <div class="edu-item">
+                    <span class="edu-title">Ingeniería Civil Informática</span>
+                    <span class="status-badge status-in-progress">● IN PROGRESS</span>
+                  </div>
+                  <div class="edu-item">
+                    <span class="edu-title">Técnico Analista de Sistemas</span>
+                    <span class="status-badge status-completed">✓ COMPLETED</span>
+                  </div>
+                </div>
+                <div class="certifications-block">
+                  <span class="cert-label">Certificaciones Verificadas:</span>
+                  <div class="xp-tags">
+                    <span class="xp-tag cert-tag">🌐 English C1 (Advanced)</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+          <section *ngSwitchCase="'portfolio'">
+            <h2>MY_PORTFOLIO.EXE</h2>
+            <p><span>C:\&gt;</span> Proyectos reales desarrollados y desplegados por Ael:</p>
+            <div class="about-portfolio-grid">
+              <div class="about-proj-card" *ngFor="let p of portfolioProjects">
+                <div class="about-proj-header">
+                  <span class="proj-icon">{{p.icon}}</span>
+                  <div>
+                    <h3>{{p.title}}</h3>
+                    <span class="proj-badge">{{p.badge}}</span>
+                  </div>
+                </div>
+                <p class="proj-sub">{{p.subtitle}}</p>
+                <p class="proj-desc">{{p.desc}}</p>
+                <div class="proj-techs">
+                  <span *ngFor="let t of p.techs" class="tech-pill">{{t}}</span>
+                </div>
+                <a [href]="p.url" target="_blank" rel="noopener" class="about-launch-btn">▶ IR AL PROYECTO 🚀</a>
+              </div>
+            </div>
+          </section>
+          <section *ngSwitchCase="'target'">
+            <h2>CAREER_TARGET.INI</h2>
+            <p class="target-copy">Busco oportunidades junior donde pueda aportar y crecer en:</p>
+            <div class="target-grid"><span>Backend Development</span><span>System Integration</span><span>Software Implementation</span><span>Master Data</span><span>Data Management</span><span>Remote International Teams</span></div>
+            <div class="availability">● AVAILABLE FOR OPPORTUNITIES</div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <footer class="statusbar"><span>PROFILE LOADED SUCCESSFULLY</span><span>UTF-8 · EN/ES · CHILE</span></footer>
+  </article>
+</section>

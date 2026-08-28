@@ -1,0 +1,96 @@
+<div class="game-arena">
+  <!-- Header con estadísticas -->
+  <div class="header">
+    <div class="ai-badge">CPU: MINIMAX AI · NIVEL IMPOSIBLE</div>
+    <h1 class="game-title">🎮 BATALLA RETRO 🎮</h1>
+    <div class="score-board">
+      <div class="player-score">
+        <div class="player-avatar player-x">🤖</div>
+        <div class="score-info">
+          <span class="player-name">JUGADOR</span>
+          <span class="score">{{playerScore}}</span>
+        </div>
+      </div>
+      <div class="vs-divider">VS</div>
+      <div class="player-score">
+        <div class="player-avatar player-o">🤖</div>
+        <div class="score-info">
+          <span class="player-name">CPU</span>
+          <span class="score">{{cpuScore}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Indicador de turno -->
+  <div class="turn-indicator" *ngIf="!winner && !isDraw">
+    <div class="turn-display" [class.player-turn]="currentPlayer === 'X'" [class.cpu-turn]="currentPlayer === 'O'">
+      <span class="turn-icon">{{currentPlayer === 'X' ? '🤖' : '🤖'}}</span>
+      <span class="turn-text">{{currentPlayer === 'X' ? 'TU TURNO' : 'TURNO CPU'}}</span>
+    </div>
+  </div>
+
+  <!-- Tablero de juego -->
+  <div class="battle-board" *ngIf="!winner && !isDraw">
+    <div class="grid-container">
+      <div *ngFor="let row of board; let rowIndex = index" class="board-row">
+        <div *ngFor="let cell of row; let colIndex = index"
+             class="battle-cell"
+             [class.occupied]="cell !== ''"
+             [class.player-x]="cell === 'X'"
+             [class.player-o]="cell === 'O'"
+             [class.winning-cell]="isWinningCell(rowIndex, colIndex)"
+             (click)="play(rowIndex, colIndex)">
+          <div class="cell-content">
+            <span *ngIf="cell === 'X'" class="symbol symbol-x">⚡</span>
+            <span *ngIf="cell === 'O'" class="symbol symbol-o">🔥</span>
+          </div>
+          <div class="cell-glow"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pantalla de resultado -->
+  <div *ngIf="winner || isDraw" class="result-screen">
+    <div class="result-content">
+      <div class="result-animation">
+        <div *ngIf="winner === 'X'" class="victory-player">
+          <span class="big-emoji">🏆</span>
+          <h2>¡VICTORIA!</h2>
+          <p>Has derrotado a la CPU</p>
+        </div>
+        <div *ngIf="winner === 'O'" class="defeat-player">
+          <span class="big-emoji">😢</span>
+          <h2>DERROTA</h2>
+          <p>La CPU te ha vencido</p>
+        </div>
+        <div *ngIf="isDraw && !winner" class="draw-result">
+          <span class="big-emoji">🤝</span>
+          <h2>EMPATE</h2>
+          <p>Nadie gana esta vez</p>
+        </div>
+      </div>
+      
+      <div class="result-buttons">
+        <button class="btn-rematch" (click)="resetGame()">
+          🔄 REVANCHA
+        </button>
+        <button class="btn-new-match" (click)="newMatch()">
+          🎲 NUEVA PARTIDA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Efectos de partículas -->
+  <div class="particles" *ngIf="showParticles">
+    <div *ngFor="let particle of particles" 
+         class="particle" 
+         [style.left.px]="particle.x"
+         [style.top.px]="particle.y"
+         [style.animation-delay.ms]="particle.delay">
+      {{particle.emoji}}
+    </div>
+  </div>
+</div>

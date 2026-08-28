@@ -1,0 +1,290 @@
+<div class="future-recruiter">
+  <header class="future-topbar">
+    <a class="future-brand" href="#recruiter-profile" (click)="navigateTo($event, 'profile')"
+      aria-label="AEL, volver al perfil">
+      <span class="brand-glyph" aria-hidden="true"><img src="ael-github-logo.png" alt="AEL Logo"
+          class="brand-logo-img"></span>
+      <span><strong>AEL</strong><small>FUTURE LIBRARY</small></span>
+    </a>
+
+    <nav class="future-primary-nav" aria-label="Navegación de Recruiter View">
+      <a *ngFor="let section of sections" [href]="'#recruiter-' + section.id"
+        [attr.aria-current]="activeSection === section.id ? 'location' : null" (click)="navigateTo($event, section.id)">
+        {{section.label}}
+      </a>
+    </nav>
+
+    <div class="future-top-actions" style="display: flex; gap: 8px; align-items: center;">
+      <button type="button" class="btn-lang-toggle" (click)="toggleLanguage()" style="background: var(--ink); color: var(--cream); border: var(--line) solid var(--cream); padding: 5px 10px; font: 700 8px/1 var(--sans); cursor: pointer; text-transform: uppercase;">
+        {{ currentLanguage === 'es' ? 'ENGLISH 🇺🇸' : 'ESPAÑOL 🇨🇱' }}
+      </button>
+      <span class="availability-signal"><i aria-hidden="true"></i> {{ currentLanguage === 'es' ? 'Disponible' : 'Available' }}</span>
+      <button type="button" (click)="showPersonalView()">{{ currentLanguage === 'es' ? 'Vista personal' : 'Personal view' }}</button>
+    </div>
+  </header>
+
+  <div class="future-layout">
+    <aside class="future-index" aria-label="Índice de Recruiter View">
+      <p class="index-heading">{{ currentLanguage === 'es' ? 'ÍNDICE / 2026' : 'INDEX / 2026' }}</p>
+      <nav>
+        <a *ngFor="let section of sections" [href]="'#recruiter-' + section.id"
+          [attr.aria-current]="activeSection === section.id ? 'location' : null"
+          (click)="navigateTo($event, section.id)">
+          <span class="index-number">{{section.shortLabel}}</span>
+          <span class="index-label">{{section.label}}</span>
+          <span *ngIf="activeSection === section.id && sectionPageCounts[section.id] > 1" class="index-progress"
+            aria-label="Página actual de la sección">
+            {{activeSectionPage}}/{{sectionPageCounts[section.id]}}
+          </span>
+        </a>
+      </nav>
+      <div class="index-foot">
+        <span>CHILE</span>
+        <span>ES / EN C1</span>
+        <span>REMOTE / ON-SITE</span>
+      </div>
+    </aside>
+
+    <main class="future-canvas">
+      <section #trackedSection id="recruiter-profile" class="future-hero" data-section="profile"
+        aria-labelledby="future-hero-title">
+        <div class="hero-grid-marker" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <p class="hero-edition">CANDIDATE FILE</p>
+          <h1 id="future-hero-title">Sofía Gómez <em>O.</em></h1>
+          <p class="hero-role">Software Developer · Systems Analyst</p>
+          <p class="hero-statement">
+            {{ currentLanguage === 'es' ? 'Construyo sistemas claros, conectados y pensados para resolver problemas reales.' : 'I build clear, connected systems designed to solve real-world problems.' }}
+          </p>
+          <p class="hero-summary">
+            {{ currentLanguage === 'es' ? 'Técnico Analista de Sistemas y estudiante de Ingeniería Civil Informática, con experiencia aplicada en desarrollo backend, integración de sistemas, gestión de datos, Linux/Docker y fundamentos de ciberseguridad.' : 'Systems Analyst Technician and Civil Computer Engineering student, with applied experience in backend development, systems integration, data management, Linux/Docker, and cybersecurity fundamentals.' }}
+          </p>
+          <div class="hero-actions">
+            <a href="#recruiter-projects" (click)="navigateTo($event, 'projects')">
+              {{ currentLanguage === 'es' ? 'Ver proyectos' : 'View projects' }} <span aria-hidden="true">↓</span>
+            </a>
+            <a class="secondary" href="https://www.linkedin.com/in/sofi-gomez-o/" target="_blank"
+              rel="noopener">{{ currentLanguage === 'es' ? 'Hablemos' : 'Let\'s talk' }} <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <aside class="hero-register" [attr.aria-label]="currentLanguage === 'es' ? 'Resumen del perfil' : 'Profile summary'">
+          <p>{{ currentLanguage === 'es' ? 'REGISTRO / AEL-001' : 'RECORD / AEL-001' }}</p>
+          <dl>
+            <div>
+              <dt>{{ currentLanguage === 'es' ? 'Especialidad' : 'Specialty' }}</dt>
+              <dd>Backend &amp; Data Integration</dd>
+            </div>
+            <div>
+              <dt>Core</dt>
+              <dd>Java · Spring Boot · SQL</dd>
+            </div>
+            <div>
+              <dt>{{ currentLanguage === 'es' ? 'Formación' : 'Education' }}</dt>
+              <dd>{{ currentLanguage === 'es' ? 'Analista de Sistemas' : 'Systems Analyst' }}</dd>
+            </div>
+            <div>
+              <dt>{{ currentLanguage === 'es' ? 'Idioma' : 'Language' }}</dt>
+              <dd>{{ currentLanguage === 'es' ? 'Inglés C1' : 'English C1 (Spanish Native)' }}</dd>
+            </div>
+          </dl>
+        </aside>
+
+        <div class="hero-coordinate" aria-hidden="true">
+          <span>X 33.45° S</span><span>Y 70.66° W</span>
+        </div>
+      </section>
+
+      <section #trackedSection id="recruiter-projects" class="atlas-section" data-section="projects"
+        aria-labelledby="atlas-title">
+        <header class="editorial-heading">
+          <div>
+            <p>02 / SELECTED WORK</p>
+            <h2 id="atlas-title">{{ currentLanguage === 'es' ? 'Proyectos' : 'Projects' }}</h2>
+          </div>
+        </header>
+
+        <div class="projects-grid-container">
+          <div class="project-atlas" [attr.aria-label]="currentLanguage === 'es' ? 'Selecciona un proyecto para consultar su dossier' : 'Select a project to view its dossier'">
+            <button *ngFor="let project of projects; let index = index" type="button" class="atlas-entry"
+              [class.selected]="selectedProject.id === project.id"
+              [attr.aria-pressed]="selectedProject.id === project.id" [style.--atlas-index]="index"
+              (click)="selectProject(project)">
+              <span class="atlas-node" aria-hidden="true">{{index + 1}}</span>
+              <div class="atlas-details-wrapper">
+                <span class="atlas-meta">{{project.chapter}} · {{project.category}}</span>
+                <strong>{{project.name}}</strong>
+                <span class="atlas-summary">{{project.summary}}</span>
+              </div>
+            </button>
+          </div>
+
+          <article id="recruiter-projects-dossier" class="project-dossier" aria-live="polite"
+            aria-labelledby="selected-project-title">
+            <div class="dossier-identity">
+              <p>{{ currentLanguage === 'es' ? 'DOSSIER ACTIVO' : 'ACTIVE DOSSIER' }}</p>
+              <span>{{selectedProject.chapter}}</span>
+              <h3 id="selected-project-title">{{selectedProject.name}}</h3>
+              <small>{{selectedProject.category}}</small>
+
+              <!-- Hover image overlay inside dossier-identity -->
+              <div class="dossier-image-overlay">
+                <img
+                  [src]="'assets/images/' + (selectedProject.id === 'kuichi-web' ? 'kuichi-web.png' : selectedProject.id === 'patota' ? 'patota.png' : 'kuichi-app.png')"
+                  [alt]="selectedProject.name" class="dossier-hover-img">
+              </div>
+            </div>
+
+            <div class="dossier-content">
+              <dl>
+                <div>
+                  <dt>{{ currentLanguage === 'es' ? 'Problema' : 'Problem' }}</dt>
+                  <dd>{{selectedProject.problem}}</dd>
+                </div>
+                <div>
+                  <dt>{{ currentLanguage === 'es' ? 'Solución / aporte' : 'Solution / contribution' }}</dt>
+                  <dd>{{selectedProject.contribution}}</dd>
+                </div>
+                <div>
+                  <dt>{{ currentLanguage === 'es' ? 'Rol' : 'Role' }}</dt>
+                  <dd>{{selectedProject.role}}</dd>
+                </div>
+              </dl>
+
+              <div class="dossier-tech">
+                <span *ngFor="let tech of selectedProject.techs">{{tech}}</span>
+              </div>
+
+              <div class="dossier-actions">
+                <a [href]="selectedProject.demoUrl" target="_blank" rel="noopener">
+                  {{ currentLanguage === 'es' ? 'Abrir demo' : 'Open demo' }} <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section #trackedSection id="recruiter-stack" class="stack-section" data-section="stack"
+        aria-labelledby="stack-title">
+        <header class="editorial-heading inverse">
+          <div>
+            <p>03 / SYSTEM INDEX</p>
+            <h2 id="stack-title">{{ currentLanguage === 'es' ? 'Tecnologías y Skills' : 'Technologies & Skills' }}</h2>
+          </div>
+          <p class="heading-note">
+            {{ currentLanguage === 'es' ? 'El stack se organiza según el problema que permite resolver, no como una colección de palabras clave.' : 'The stack is organized by the problems it solves, not as a random collection of keywords.' }}
+          </p>
+        </header>
+
+        <div class="stack-ledger">
+          <article *ngFor="let group of stackGroups; let index = index"
+            [attr.id]="index === 2 ? 'recruiter-stack-more' : null" [class.wheel-subsection]="index === 2">
+            <div class="stack-code">
+              <span>{{group.code}}</span>
+              <b aria-hidden="true">{{index + 1}}</b>
+            </div>
+            <div>
+              <h3>{{group.title}}</h3>
+              <p>{{group.description}}</p>
+              <ul [attr.aria-label]="currentLanguage === 'es' ? 'Tecnologías' : 'Technologies'">
+                <li *ngFor="let skill of group.skills">{{skill}}</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section #trackedSection id="recruiter-trajectory" class="trajectory-section" data-section="trajectory"
+        aria-labelledby="trajectory-title">
+        <header class="editorial-heading">
+          <div>
+            <p>04 / LEARNING PATH</p>
+            <h2 id="trajectory-title">{{ currentLanguage === 'es' ? 'Trayectoria' : 'Learning Path' }}</h2>
+          </div>
+          <p class="heading-note">
+            {{ currentLanguage === 'es' ? 'Formación técnica, experiencia aplicada y aprendizaje continuo dentro y fuera del software.' : 'Technical training, applied experience, and continuous learning in and out of software development.' }}
+          </p>
+        </header>
+
+        <ol class="trajectory-ledger">
+          <li *ngFor="let item of timeline; let index = index; let last = last"
+            [attr.id]="index === 2 ? 'recruiter-trajectory-more' : null" [class.wheel-subsection]="index === 2"
+            [class.last]="last">
+            <div class="trajectory-marker"><span>{{item.marker}}</span><i aria-hidden="true"></i></div>
+            <div class="trajectory-copy">
+              <p>{{item.meta}}</p>
+              <h3>{{item.title}}</h3>
+              <span>{{item.description}}</span>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section #trackedSection id="recruiter-contact" class="contact-section" data-section="contact"
+        aria-labelledby="contact-title">
+        <div class="contact-copy">
+          <p>05 / NEXT CONNECTION</p>
+          <h2 id="contact-title">
+            {{ currentLanguage === 'es' ? 'Construyamos algo ' : 'Let\'s build something ' }}<em>{{ currentLanguage === 'es' ? 'útil.' : 'useful.' }}</em>
+          </h2>
+          <span>
+            {{ currentLanguage === 'es' ? 'Disponible para conversar sobre oportunidades junior en desarrollo de software, backend, integración de sistemas y áreas técnicas relacionadas.' : 'Available to discuss junior opportunities in software development, backend, systems integration, and related technical fields.' }}
+          </span>
+          <div class="contact-actions">
+            <a href="https://www.linkedin.com/in/sofi-gomez-o/" target="_blank" rel="noopener">
+              {{ currentLanguage === 'es' ? 'Visita mi LinkedIn' : 'Visit my LinkedIn' }} <span aria-hidden="true">↗</span>
+            </a>
+            <a href="https://github.com/AelStGermain" target="_blank" rel="noopener">GitHub <span
+                aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <aside class="recruiter-ai" [attr.aria-labelledby]="currentLanguage === 'es' ? 'Consulta rápida' : 'Quick query'">
+          <header>
+            <div><span aria-hidden="true">A✦</span></div>
+            <p><small>AEL_AI / PROFILE GUIDE</small><strong id="recruiter-ai-title">{{ currentLanguage === 'es' ? 'Consulta rápida' : 'Quick query' }}</strong></p>
+            <i aria-hidden="true"></i>
+          </header>
+
+          <div class="recruiter-ai-log" aria-live="polite">
+            <div *ngFor="let message of aiMessages" [class.user]="message.sender === 'user'">
+              <small>{{message.sender === 'bot' ? 'AEL_AI' : (currentLanguage === 'es' ? 'TÚ' : 'YOU')}}</small>
+              <p>{{message.text}}</p>
+            </div>
+            <p *ngIf="aiTyping && aiMessages[aiMessages.length - 1]?.text === ''" class="ai-wait">
+              {{ currentLanguage === 'es' ? 'Procesando' : 'Thinking' }}<span>...</span></p>
+          </div>
+
+          <div class="recruiter-ai-prompts">
+            <button type="button" (click)="askRecruiterAi('hire')" [disabled]="aiTyping">
+              {{ currentLanguage === 'es' ? 'Aporte al equipo' : 'Team contribution' }}
+            </button>
+            <button type="button" (click)="askRecruiterAi('experience')" [disabled]="aiTyping">
+              {{ currentLanguage === 'es' ? 'Experiencia' : 'Experience' }}
+            </button>
+            <button type="button" (click)="askRecruiterAi('spring')" [disabled]="aiTyping">
+              Backend &amp; APIs
+            </button>
+            <button type="button" (click)="askRecruiterAi('security')" [disabled]="aiTyping">
+              {{ currentLanguage === 'es' ? 'Seguridad & SC-900' : 'Security & SC-900' }}
+            </button>
+            <button type="button" (click)="askRecruiterAi('education')" [disabled]="aiTyping">
+              {{ currentLanguage === 'es' ? 'Formación' : 'Education' }}
+            </button>
+            <button type="button" (click)="askRecruiterAi('projects')" [disabled]="aiTyping">
+              {{ currentLanguage === 'es' ? 'Proyectos' : 'Projects' }}
+            </button>
+          </div>
+        </aside>
+      </section>
+
+      <footer class="future-footer">
+        <span>AEL FUTURE LIBRARY · RECRUITER EDITION</span>
+        <span>SOFTWARE / SYSTEMS / DATA</span>
+        <a href="#recruiter-profile" (click)="navigateTo($event, 'profile')">{{ currentLanguage === 'es' ? 'Volver arriba ↑' : 'Back to top ↑' }}</a>
+      </footer>
+    </main>
+  </div>
+
+</div>

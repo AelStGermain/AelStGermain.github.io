@@ -1,0 +1,180 @@
+<section class="portal" [class.recruiter-mode]="isRecruiterMode" aria-labelledby="welcome-title">
+  <!-- Mode Toggle Floating Banner for Y2K Portal -->
+  <div class="mode-toggle-banner" *ngIf="!isRecruiterMode">
+    <div class="banner-info">
+      <span>MODO ACTUAL: <strong>👾 VISTA PERSONAL Y2K</strong></span>
+    </div>
+    <button type="button" class="mode-switch-btn" (click)="toggleRecruiterMode()">
+      💼 CAMBIAR A RECRUITER VIEW
+    </button>
+  </div>
+
+  <img *ngIf="!isRecruiterMode" class="floating-gif gif-heart heart-a" src="heart-gif-1.gif" alt="" aria-hidden="true">
+  <img *ngIf="!isRecruiterMode" class="floating-gif gif-heart heart-b" src="heart-gif-1.gif" alt="" aria-hidden="true">
+  <img *ngIf="!isRecruiterMode" class="floating-gif gif-heart heart-c" src="heart-gif-1.gif" alt="" aria-hidden="true">
+  <img *ngIf="!isRecruiterMode" class="floating-gif gif-stars" src="pink.gif" alt="" aria-hidden="true">
+  
+  <div class="marquee" *ngIf="!isRecruiterMode">
+    <span>✦ WELCOME TO MY LITTLE CORNER OF THE WORLD WIDE WEB ✦ ALWAYS UNDER CONSTRUCTION ✦</span>
+  </div>
+
+  <!-- Recruiter View is isolated from the Personal Y2K portal. -->
+  <app-recruiter-view *ngIf="isRecruiterMode"></app-recruiter-view>
+
+  <!-- PERSONAL Y2K PORTAL VIEW -->
+  <div *ngIf="!isRecruiterMode" class="portal-grid">
+    <!-- Left Column: STATUS, UPDATES, RADIO -->
+    <aside class="left-column">
+
+      <section class="web-box">
+        <h2>.: STATUS :.</h2>
+        <p class="status">● ONLINE</p>
+        <p>currently building:<br><b>cool_stuff.exe</b></p>
+      </section>
+
+      <section class="web-box updates">
+        <h2>.: UPDATES :.</h2>
+        <p><b>26.07.26</b><br>💼 Executive Recruiter Mode live!</p>
+        <p><b>26.07.26</b><br>🐱 AEL_PET pixel companion live!</p>
+        <p><b>23.07.26</b><br>🐾 Left Drawer: Real Projects (Patota &amp; Kuichi).</p>
+        <p><b>22.07.26</b><br>Y2K portal online.</p>
+      </section>
+
+      <!-- RADIO & CANVAS VISUALIZER -->
+      <section class="web-box now-playing">
+        <h2>.: AEL_WAVE RADIO :.</h2>
+        <p class="radio-status-text">{{radioOn ? '♫ ' + station.toUpperCase() + ' signal online' : 'radio is sleeping...'}}</p>
+        
+        <!-- Canvas Frequency Equalizer -->
+        <div class="visualizer-container">
+          <canvas #radioCanvas class="radio-canvas" width="144" height="28"></canvas>
+        </div>
+
+        <div class="station-tabs">
+          <button [class.active]="station==='dream'" (click)="selectStation('dream')">DREAM</button>
+          <button [class.active]="station==='cosmic'" (click)="selectStation('cosmic')">COSMIC</button>
+          <button [class.active]="station==='lofi'" (click)="selectStation('lofi')">LOFI LIVE</button>
+          <button [class.active]="station==='synth'" (click)="selectStation('synth')">SYNTH</button>
+        </div>
+
+        <button class="play-radio" (click)="toggleRadio()">{{radioOn ? '■ STOP' : '▶ PLAY'}}</button>
+        
+        <label class="vol-label">
+          VOL <input type="range" min="0.04" max="0.5" step="0.02" [(ngModel)]="volume" (input)="setVolume()">
+        </label>
+        <small>generative &amp; live streams</small>
+      </section>
+
+    </aside>
+
+    <!-- Center Column: WELCOME, BOT, MY PROJECTS, COOL LINKS -->
+    <div class="center-column">
+
+      <section class="web-box welcome-box">
+        <h2 id="welcome-title">.: WELCOME, WEB TRAVELLER! :.</h2>
+        <div class="welcome-content">
+          <div class="computer" aria-hidden="true">💻</div>
+          <div>
+            <p><b>¡Hola! Soy Ael.</b></p>
+            <p>Desarrolladora, educadora y exploradora digital. Este es mi rincón personal donde vacío mis proyectos, experimentos y herramientas.</p>
+            <p>
+              <a routerLink="/about">[ leer mi historia ]</a>
+              <button (click)="openPortfolio()" class="portfolio-link-btn">[ ver mi portafolio ]</button>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="web-box spotlight">
+        <h2>.: AEL_BOT :.</h2>
+        <div>
+          <span class="bot-face">(◕‿◕)</span>
+          <p>Conversa con mi pequeña representante digital en cualquier subpágina. ¡Ahora con marcos Y2K seleccionables!</p>
+          <button class="y2k-button" (click)="openBot()">CHAT NOW!</button>
+          <small>o presiona la tecla /</small>
+        </div>
+      </section>
+
+      <!-- PORTFOLIO PROJECTS -->
+      <section class="web-box projects" id="projects">
+        <h2>.: MY PROJECTS :.</h2>
+        <p class="projects-intro">Proyectos de software web y móvil desarrollados por Ael:</p>
+        <div class="home-portfolio-grid">
+          <article class="home-proj-card" *ngFor="let proj of developerProjects">
+            <div class="proj-header">
+              <span class="proj-icon">{{proj.icon}}</span>
+              <div>
+                <h3>{{proj.title}}</h3>
+                <span class="proj-badge">{{proj.badge}}</span>
+              </div>
+            </div>
+            <p class="proj-sub">{{proj.subtitle}}</p>
+            <p class="proj-desc">{{proj.desc}}</p>
+            <div class="proj-techs">
+              <span *ngFor="let t of proj.techs" class="tech-pill">{{t}}</span>
+            </div>
+            <a [href]="proj.url" target="_blank" rel="noopener" class="launch-btn">
+              ▶ ABRIR APLICACIÓN 🚀
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section class="web-box links center-links">
+        <h2>.: COOL LINKS :.</h2>
+        <div>
+          <a routerLink="/about">♡ Profile</a>
+          <a routerLink="/ctf">⌘ Security lab</a>
+          <a routerLink="/snake">★ Arcade</a>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Column: WEBMISTRESS, GITHUB_LIVE_ACTIVITY -->
+    <aside class="right-column">
+
+      <section class="web-box profile-mini">
+        <h2>.: WEBMISTRESS :.</h2>
+        <div class="avatar-cycle small-avatar">
+          <img src="avatar-dark-retro.jpg" alt="Retrato retro de Ael con cabello oscuro">
+          <img src="avatar-light-retro.jpg" alt="Retrato retro de Ael con cabello claro">
+        </div>
+        <b>AEL</b>
+        <p>developer<br>educator<br>digital explorer</p>
+      </section>
+
+      <!-- GITHUB LIVE ACTIVITY WIDGET -->
+      <section class="web-box github-widget">
+        <h2>.: GITHUB_LIVE_ACTIVITY :.</h2>
+        <div class="github-content">
+          <div class="github-stats-bar">
+            <span><b>{{githubStats.publicRepos}}</b> repos</span>
+            <span><b>{{githubStats.followers}}</b> seguidores</span>
+          </div>
+
+          <div class="github-feed" *ngIf="!githubLoading; else ghLoading">
+            <div *ngFor="let ev of githubEvents" class="gh-feed-item">
+              <div class="gh-item-header">
+                <span class="gh-repo">🐙 {{ev.repo}}</span>
+                <span class="gh-date">{{ev.date}}</span>
+              </div>
+              <p class="gh-msg">{{ev.message}}</p>
+            </div>
+          </div>
+
+          <ng-template #ghLoading>
+            <div class="gh-loading">Cargando actividad de GitHub...</div>
+          </ng-template>
+
+          <a href="https://github.com/AelStGermain" target="_blank" rel="noopener" class="gh-profile-link">
+            [ ver github.com/AelStGermain ]
+          </a>
+        </div>
+      </section>
+
+    </aside>
+  </div>
+
+  <div class="webring" *ngIf="!isRecruiterMode">« PREV　 <b>PERSONAL WEBRING OF CURIOUS PEOPLE</b>　 RANDOM　 NEXT »</div>
+</section>
