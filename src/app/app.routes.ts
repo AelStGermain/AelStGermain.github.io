@@ -9,6 +9,7 @@ import { AboutComponent } from './about/about.component';
 import { CipherComponent } from './cipher/cipher.component';
 import { CtfComponent } from './ctf/ctf.component';
 import { BatallaNavalComponent } from './batalla-naval/batalla-naval.component';
+import { RecruiterViewComponent } from './home/recruiter-view/recruiter-view.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,6 +22,9 @@ export const routes: Routes = [
   { path: 'ctf', component: CtfComponent },
   { path: 'batalla-naval', component: BatallaNavalComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'portfolio/es', component: RecruiterViewComponent },
+  { path: 'portfolio/en', component: RecruiterViewComponent },
+  { path: 'portfolio', redirectTo: 'portfolio/es', pathMatch: 'full' },
   { path: '**', redirectTo: '' }
 ];
 

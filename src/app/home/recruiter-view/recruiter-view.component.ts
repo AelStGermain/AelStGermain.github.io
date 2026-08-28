@@ -9,7 +9,7 @@ import {
   ViewChildren
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { BotService } from '../../service/bot.service';
 
 type RecruiterSection = 'profile' | 'projects' | 'stack' | 'trajectory' | 'contact';
@@ -390,7 +390,9 @@ export class RecruiterViewComponent implements OnInit, AfterViewInit, OnDestroy 
 
   constructor(
     private host: ElementRef<HTMLElement>,
-    public botService: BotService
+    public botService: BotService,
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngAfterViewInit(): void {
@@ -514,15 +516,24 @@ export class RecruiterViewComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnInit(): void {
-    this.selectedProject = this.projects[0];
-    this.aiMessages = [
-      {
-        sender: 'bot',
-        text: this.currentLanguage === 'es'
-          ? 'Soy AEL_AI. Puedo guiarte sobre el perfil profesional, la experiencia, el backend, la formación, la seguridad o los proyectos de Sofía.'
-          : 'I am AEL_AI. I can guide you on Sofia\'s professional profile, experience, backend, education, security, or projects.'
+    this.route.url.subscribe(() => {
+      const url = this.router.url;
+      const lang = url.includes('/portfolio/en') ? 'en' : 'es';
+      this.botService.setRecruiterLanguage(lang);
+
+      this.selectedProject = this.projects.find(p => p.id === this.selectedProject?.id) || this.projects[0];
+
+      if (this.aiMessages.length <= 1) {
+        this.aiMessages = [
+          {
+            sender: 'bot',
+            text: lang === 'es'
+              ? 'Soy AEL_AI. Puedo guiarte sobre el perfil profesional, la experiencia, el backend, la formación, la seguridad o los proyectos de Sofía.'
+              : 'I am AEL_AI. I can guide you on Sofia\'s professional profile, experience, backend, education, security, or projects.'
+          }
+        ];
       }
-    ];
+    });
   }
 
   selectProject(project: RecruiterProject): void {
@@ -530,7 +541,10 @@ export class RecruiterViewComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   showPersonalView(): void {
-    this.botService.toggleRecruiterMode();
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('ael_recruiter_mode', 'false');
+    }
+    this.router.navigate(['/']);
   }
 
   get currentLanguage(): 'es' | 'en' {
@@ -539,21 +553,10 @@ export class RecruiterViewComponent implements OnInit, AfterViewInit, OnDestroy 
 
   toggleLanguage(): void {
     const nextLang = this.currentLanguage === 'es' ? 'en' : 'es';
-    this.botService.setRecruiterLanguage(nextLang);
-    this.aiMessages = [
-      {
-        sender: 'bot',
-        text: nextLang === 'es'
-          ? 'Soy AEL_AI. Puedo guiarte sobre el perfil profesional, la experiencia, el backend, la formación, la seguridad o los proyectos de Sofía.'
-          : 'I am AEL_AI. I can guide you on Sofia\'s professional profile, experience, backend, education, security, or projects.'
-      }
-    ];
-    // Sync selectedProject reference
-    const currentId = this.selectedProject.id;
-    const synced = this.projects.find(p => p.id === currentId);
-    if (synced) {
-      this.selectedProject = synced;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('ael_recruiter_lang', nextLang);
     }
+    this.router.navigate([`/portfolio/${nextLang}`]);
   }
 
   askRecruiterAi(topic: RecruiterQuestion): void {

@@ -1,6 +1,6 @@
-<section class="portal" [class.recruiter-mode]="isRecruiterMode" aria-labelledby="welcome-title">
+<section class="portal" aria-labelledby="welcome-title">
   <!-- Mode Toggle Floating Banner for Y2K Portal -->
-  <div class="mode-toggle-banner" *ngIf="!isRecruiterMode">
+  <div class="mode-toggle-banner">
     <div class="banner-info">
       <span>MODO ACTUAL: <strong>👾 VISTA PERSONAL Y2K</strong></span>
     </div>
@@ -9,20 +9,17 @@
     </button>
   </div>
 
-  <img *ngIf="!isRecruiterMode" class="floating-gif gif-heart heart-a" src="heart-gif-1.gif" alt="" aria-hidden="true">
-  <img *ngIf="!isRecruiterMode" class="floating-gif gif-heart heart-b" src="heart-gif-1.gif" alt="" aria-hidden="true">
-  <img *ngIf="!isRecruiterMode" class="floating-gif gif-heart heart-c" src="heart-gif-1.gif" alt="" aria-hidden="true">
-  <img *ngIf="!isRecruiterMode" class="floating-gif gif-stars" src="pink.gif" alt="" aria-hidden="true">
+  <img class="floating-gif gif-heart heart-a" src="heart-gif-1.gif" alt="" aria-hidden="true">
+  <img class="floating-gif gif-heart heart-b" src="heart-gif-1.gif" alt="" aria-hidden="true">
+  <img class="floating-gif gif-heart heart-c" src="heart-gif-1.gif" alt="" aria-hidden="true">
+  <img class="floating-gif gif-stars" src="pink.gif" alt="" aria-hidden="true">
   
-  <div class="marquee" *ngIf="!isRecruiterMode">
+  <div class="marquee">
     <span>✦ WELCOME TO MY LITTLE CORNER OF THE WORLD WIDE WEB ✦ ALWAYS UNDER CONSTRUCTION ✦</span>
   </div>
 
-  <!-- Recruiter View is isolated from the Personal Y2K portal. -->
-  <app-recruiter-view *ngIf="isRecruiterMode"></app-recruiter-view>
-
   <!-- PERSONAL Y2K PORTAL VIEW -->
-  <div *ngIf="!isRecruiterMode" class="portal-grid">
+  <div class="portal-grid">
     <!-- Left Column: STATUS, UPDATES, RADIO -->
     <aside class="left-column">
 
@@ -176,5 +173,5 @@
     </aside>
   </div>
 
-  <div class="webring" *ngIf="!isRecruiterMode">« PREV　 <b>PERSONAL WEBRING OF CURIOUS PEOPLE</b>　 RANDOM　 NEXT »</div>
+  <div class="webring">« PREV　 <b>PERSONAL WEBRING OF CURIOUS PEOPLE</b>　 RANDOM　 NEXT »</div>
 </section>

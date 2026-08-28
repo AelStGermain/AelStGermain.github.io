@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BotService } from '../service/bot.service';
-import { RecruiterViewComponent } from './recruiter-view/recruiter-view.component';
 
 export interface GitHubEventItem {
   repo: string;
@@ -15,7 +14,7 @@ export interface GitHubEventItem {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, RecruiterViewComponent],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -48,15 +47,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     { repo: 'AelStGermain/kuichiweb', type: 'PushEvent', message: 'feat: add vet service booking API integration', date: '2026-07-22' }
   ];
 
-  // Recruiter View Toggle & Tab State
-  get isRecruiterMode(): boolean {
-    return this.botService.isRecruiterMode;
-  }
-  set isRecruiterMode(val: boolean) {
-    if (this.botService.isRecruiterMode !== val) {
-      this.botService.toggleRecruiterMode();
-    }
-  }
   constructor(
     private router: Router,
     public botService: BotService
@@ -67,7 +57,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   toggleRecruiterMode(): void {
-    this.botService.toggleRecruiterMode();
+    const lang = this.botService.recruiterLanguage || 'es';
+    this.router.navigate([`/portfolio/${lang}`]);
   }
 
   fetchGitHubActivity(): void {

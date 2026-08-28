@@ -104,23 +104,56 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const requestedView = typeof window !== 'undefined'
-      ? new URLSearchParams(window.location.search).get('view')
-      : null;
+    const currentUrl = typeof window !== 'undefined' ? window.location.pathname : '';
+    const isPortfolioRoute = currentUrl.includes('/portfolio');
+    const isHome = currentUrl === '/' || currentUrl === '' || currentUrl.endsWith('/Ael/') || currentUrl.endsWith('/index.html');
 
-    if (requestedView === 'recruiter' || requestedView === 'personal') {
-      this.chooseViewMode(requestedView);
-    } else if (typeof localStorage !== 'undefined') {
+    if (isHome) {
+      const requestedView = typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('view')
+        : null;
+
+      if (requestedView === 'recruiter') {
+        const lang = this.botService.recruiterLanguage || 'es';
+        this.router.navigate([`/portfolio/${lang}`]);
+        return;
+      } else if (requestedView === 'personal') {
+        // Stay on home
+      } else if (typeof localStorage !== 'undefined') {
+        const prompted = localStorage.getItem('ael_view_prompted');
+        if (prompted) {
+          const isRecruiter = localStorage.getItem('ael_recruiter_mode') === 'true';
+          if (isRecruiter) {
+            const lang = localStorage.getItem('ael_recruiter_lang') || 'es';
+            this.router.navigate([`/portfolio/${lang}`]);
+            return;
+          }
+        } else {
+          this.showViewPromptModal = true;
+        }
+      }
+    } else if (typeof localStorage !== 'undefined' && !isPortfolioRoute) {
       const prompted = localStorage.getItem('ael_view_prompted');
       if (!prompted) {
         this.showViewPromptModal = true;
       }
     }
+
     this.setCursor(localStorage.getItem('ael-cursor') || 'cursor1');
     this.router.events.pipe(
       filter((event: any): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       const url = (event as NavigationEnd).urlAfterRedirects.split('?')[0];
+      
+      const isPortfolio = url.includes('/portfolio');
+      this.botService.isRecruiterMode = isPortfolio;
+      
+      if (isPortfolio) {
+        const lang = url.includes('/portfolio/en') ? 'en' : 'es';
+        this.botService.setRecruiterLanguage(lang);
+        this.showViewPromptModal = false;
+      }
+      
       this.isEditorialPage = url === '/';
       document.body.classList.toggle('index-page', url === '/');
       this.isMenuOpen = false;
@@ -129,29 +162,37 @@ export class AppComponent implements OnInit {
   }
 
   toggleRecruiterMode() {
-    this.botService.toggleRecruiterMode();
+    if (this.isRecruiterMode) {
+      this.router.navigate(['/']);
+    } else {
+      const lang = this.botService.recruiterLanguage || 'es';
+      this.router.navigate([`/portfolio/${lang}`]);
+    }
   }
 
   chooseViewMode(mode: 'recruiter' | 'personal') {
-    const targetVal = mode === 'recruiter';
-    if (this.botService.isRecruiterMode !== targetVal) {
-      this.botService.toggleRecruiterMode();
-    }
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('ael_view_prompted', 'true');
+      localStorage.setItem('ael_recruiter_mode', mode === 'recruiter' ? 'true' : 'false');
     }
     this.showViewPromptModal = false;
+    
+    if (mode === 'recruiter') {
+      const lang = this.botService.recruiterLanguage || 'es';
+      this.router.navigate([`/portfolio/${lang}`]);
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   chooseRecruiterView(lang: 'es' | 'en') {
     this.botService.setRecruiterLanguage(lang);
-    if (!this.botService.isRecruiterMode) {
-      this.botService.toggleRecruiterMode();
-    }
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('ael_view_prompted', 'true');
+      localStorage.setItem('ael_recruiter_mode', 'true');
     }
     this.showViewPromptModal = false;
+    this.router.navigate([`/portfolio/${lang}`]);
   }
 
   @HostListener('document:keydown', ['$event'])
