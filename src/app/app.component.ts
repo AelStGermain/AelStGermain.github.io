@@ -119,11 +119,8 @@ export class AppComponent implements OnInit {
         return;
       } else if (requestedView === 'personal') {
         // Stay on home
-      } else if (typeof localStorage !== 'undefined') {
-        const prompted = localStorage.getItem('ael_view_prompted');
-        if (!prompted) {
-          this.showViewPromptModal = true;
-        }
+      } else {
+        this.showViewPromptModal = true;
       }
     } else if (typeof localStorage !== 'undefined' && !isPortfolioRoute) {
       const prompted = localStorage.getItem('ael_view_prompted');
