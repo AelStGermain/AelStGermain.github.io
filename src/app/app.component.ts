@@ -121,14 +121,7 @@ export class AppComponent implements OnInit {
         // Stay on home
       } else if (typeof localStorage !== 'undefined') {
         const prompted = localStorage.getItem('ael_view_prompted');
-        if (prompted) {
-          const isRecruiter = localStorage.getItem('ael_recruiter_mode') === 'true';
-          if (isRecruiter) {
-            const lang = localStorage.getItem('ael_recruiter_lang') || 'es';
-            this.router.navigate([`/portfolio/${lang}`]);
-            return;
-          }
-        } else {
+        if (!prompted) {
           this.showViewPromptModal = true;
         }
       }
